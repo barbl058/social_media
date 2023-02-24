@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePageWeb extends StatefulWidget {
+  const HomePageWeb({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageWeb> createState() => _HomePageWebState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageWebState extends State<HomePageWeb> {
   final PageController _controller = PageController();
-  final Map<String, WebViewController?> _webViewControllers = {};
+  final Map<String, PlatformWebViewController?> _webViewControllers = {};
 
   // /// Only can have previous, current and next
   // final Map<String, WebViewWidget?> _webViewWidgets = {};
@@ -81,30 +81,12 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  WebViewController _buildWebViewController(String uri) => WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(const Color(0x00000000))
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onProgress: (int progress) {
-          // if (progress == 0 || progress == 100) {
-          //   print('$progress% - $uri');
-          // }
-        },
-        onPageStarted: (String url) {
-          print('$url started');
-        },
-        onPageFinished: (String url) {
-          print('$url finished');
-        },
-        onWebResourceError: (WebResourceError error) {
-          print('$error - $uri');
-        },
-        onNavigationRequest: (NavigationRequest request) =>
-            NavigationDecision.navigate,
-      ),
-    )
-    ..loadRequest(Uri.parse(uri));
+  PlatformWebViewController _buildWebViewController(String uri) =>
+      PlatformWebViewController(
+        const PlatformWebViewControllerCreationParams(),
+      )..loadRequest(
+          LoadRequestParams(uri: Uri.parse(uri)),
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -112,22 +94,57 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Post PageView POC'),
       ),
-      body: PageView.builder(
-        controller: _controller,
-        itemCount: _urls.length,
-        itemBuilder: (BuildContext context, int index) {
-          var webViewController = _webViewControllers[_urls[index]];
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              _controller.previousPage(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.linear,
+              );
+            },
+            child: const Icon(
+              Icons.arrow_back_ios_outlined,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
+          Expanded(
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: _urls.length,
+              itemBuilder: (BuildContext context, int index) {
+                var webViewController = _webViewControllers[_urls[index]];
 
-          if (webViewController == null) {
-            _takeMoreControllersAt(index);
-            webViewController = _webViewControllers[_urls[index]];
-          }
+                if (webViewController == null) {
+                  _takeMoreControllersAt(index);
+                  webViewController = _webViewControllers[_urls[index]];
+                }
 
-          return WebViewWidget(
-            controller: webViewController!,
-            key: ValueKey(index),
-          );
-        },
+                return PlatformWebViewWidget(
+                  PlatformWebViewWidgetCreationParams(
+                    controller: webViewController!,
+                    key: ValueKey(index),
+                  ),
+                ).build(context);
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              _controller.nextPage(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.linear,
+              );
+            },
+            child: const Icon(
+              Icons.arrow_forward_ios_outlined,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
+        ],
       ),
     );
   }
