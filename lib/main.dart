@@ -1,13 +1,13 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media/widgets/home_page_web.dart';
-import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
-import 'package:webview_flutter_web/webview_flutter_web.dart';
+// import 'package:social_media/widgets/home_page_web.dart';
+// import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
+// import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 import 'widgets/home_page.dart';
 
 void main() {
-  WebViewPlatform.instance = WebWebViewPlatform();
+  // WebViewPlatform.instance = WebWebViewPlatform();
 
   runApp(const MyApp());
 }
@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: kIsWeb ? const HomePageWeb() : const HomePage(),
+      // home: kIsWeb ? const HomePageWeb() : const HomePage(),
+      home: const HomePage(),
     );
   }
 }
