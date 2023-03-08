@@ -111,59 +111,59 @@ class _HomePageState extends State<HomePage> {
       // ..loadRequest(Uri.parse(uri));
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: const Text('Post PageView POC'),
-  //     ),
-  //     body: PageView.builder(
-  //       controller: _controller,
-  //       itemCount: _urls.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         var webViewController = _webViewControllers[_urls[index]];
-  //
-  //         if (webViewController == null) {
-  //           _takeMoreControllersAt(index);
-  //           webViewController = _webViewControllers[_urls[index]];
-  //         }
-  //
-  //         return WebViewWidget(
-  //           controller: webViewController!,
-  //           key: ValueKey(index),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
-    var webViewController = _webViewControllers[_urls[0]];
-
-    if (webViewController == null) {
-      _takeMoreControllersAt(0);
-      webViewController = _webViewControllers[_urls[0]];
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Embed POC'),
+        title: const Text('Post PageView POC'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text('This is markdown text'),
-          SizedBox(
-            height: 600,
-            width: 400,
-            child: WebViewWidget(
-              controller: webViewController!,
-            ),
-          ),
-          Text('This is more markdown text'),
-        ],
+      body: PageView.builder(
+        controller: _controller,
+        itemCount: _urls.length,
+        itemBuilder: (BuildContext context, int index) {
+          var webViewController = _webViewControllers[_urls[index]];
+
+          if (webViewController == null) {
+            _takeMoreControllersAt(index);
+            webViewController = _webViewControllers[_urls[index]];
+          }
+
+          return WebViewWidget(
+            controller: webViewController!,
+            key: ValueKey(index),
+          );
+        },
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   var webViewController = _webViewControllers[_urls[0]];
+  //
+  //   if (webViewController == null) {
+  //     _takeMoreControllersAt(0);
+  //     webViewController = _webViewControllers[_urls[0]];
+  //   }
+  //
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: const Text('Embed POC'),
+  //     ),
+  //     body: Column(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         Text('This is markdown text'),
+  //         SizedBox(
+  //           height: 600,
+  //           width: 400,
+  //           child: WebViewWidget(
+  //             controller: webViewController!,
+  //           ),
+  //         ),
+  //         Text('This is more markdown text'),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
