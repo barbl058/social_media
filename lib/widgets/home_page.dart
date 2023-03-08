@@ -82,8 +82,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   WebViewController _buildWebViewController(String uri) {
-    const uriFile =
-        '<iframe allowfullscreen="true" width="100%" height="100%" style="position:absolute;left:0;top:0;border:none;" src="https://evideo.disney.com/embed?id=e02b7071-2968-4e4d-b2bc-e7c440b9ce25&amp;placeholder"></iframe>';
+    // const uriFile =
+    //     '<iframe allowfullscreen="true" width="100%" height="100%" style="position:absolute;left:0;top:0;border:none;" src="https://evideo.disney.com/embed?id=e02b7071-2968-4e4d-b2bc-e7c440b9ce25&amp;placeholder"></iframe>';
 
     return WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -107,8 +107,8 @@ class _HomePageState extends State<HomePage> {
           onNavigationRequest: (NavigationRequest request) =>
               NavigationDecision.navigate,
         ),
-      )..loadHtmlString(uriFile);
-      // ..loadRequest(Uri.parse(uri));
+      // )..loadHtmlString(uriFile);
+      )..loadRequest(Uri.parse(uri));
   }
 
   @override
